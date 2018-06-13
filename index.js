@@ -2,6 +2,7 @@
 const popUpThumbnail = document.querySelector(".thumbs");
 const mainImage = document.querySelector(".photo");
 const search = document.querySelector("#search");
+const info = document.querySelector("#conditions");
 //console.log(cityName);
 
 popUpThumbnail.addEventListener('click', function(event){
@@ -19,14 +20,16 @@ search.addEventListener('submit', function(event){
 
 
 function getWeather(cityName) {
-  //const url = 'http://api.openweathermap.org/data/2.5/weather?q=london&APPID=6eb8e0a606f302d3694024e89224db53';
   const url = `http://api.openweathermap.org/data/2.5/weather?q=${cityName}&APPID=6eb8e0a606f302d3694024e89224db53`;
   return fetch(url)
   .then(function(response){
     return response.json()
   }).then(function(data){
+    //console.log(data);
     const weatherDescription = (data.weather[0]['description']);
+    info.textContent ="F° "+ data.main.temp+ " "+cityName
     weatherImage(encodeURI(weatherDescription));
+
   })
   .catch(function(error){
     console.log('error');
@@ -52,5 +55,3 @@ function weatherImage (description){
 
   })
 }
-//getWeather();
-//weatherImage();
