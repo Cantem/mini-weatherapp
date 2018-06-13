@@ -1,3 +1,14 @@
+
+const popUpThumbnail = document.querySelector(".thumbs");
+const mainImage = document.querySelector(".photo");
+
+popUpThumbnail.addEventListener('click', function(event){
+  event.preventDefault();
+  if(event.target.className!=="thumbs__link") return
+  mainImage.innerHTML = `<img src=${event.target.href}>`
+
+})
+
 function getWeather() {
   const url = 'http://api.openweathermap.org/data/2.5/weather?q=london&APPID=6eb8e0a606f302d3694024e89224db53';
   return fetch(url)
@@ -25,13 +36,13 @@ function weatherImage (){
     return response.json()
   }).then (function(data){
     const images = data.results.map(function(image){
-      //console.log(image.urls.thumb);
+      // console.log(image.urls);
       return`
-      <img src = ${image.urls.thumb}>
+      <a href=${image.urls.regular} class="thumbs__link"><img class="thumbs__link__img" src= ${image.urls.thumb}></a>
       `
     })
     thumbs.innerHTML = images;
+
   })
 }
 weatherImage();
-//console.log(weatherImage);
