@@ -1,22 +1,32 @@
 
 const popUpThumbnail = document.querySelector(".thumbs");
 const mainImage = document.querySelector(".photo");
+const search = document.querySelector("#search");
+//console.log(cityName);
 
 popUpThumbnail.addEventListener('click', function(event){
   event.preventDefault();
   if(event.target.className!=="thumbs__link") return
   mainImage.innerHTML = `<img src=${event.target.href}>`
-
 })
 
-function getWeather() {
-  const url = 'http://api.openweathermap.org/data/2.5/weather?q=london&APPID=6eb8e0a606f302d3694024e89224db53';
+search.addEventListener('submit', function(event){
+  event.preventDefault();
+  const cityName = document.querySelector("#search-tf");
+
+  getWeather(cityName.value);
+})
+
+
+function getWeather(cityName) {
+  //const url = 'http://api.openweathermap.org/data/2.5/weather?q=london&APPID=6eb8e0a606f302d3694024e89224db53';
+  const url = `http://api.openweathermap.org/data/2.5/weather?q=${cityName}&APPID=6eb8e0a606f302d3694024e89224db53`;
   return fetch(url)
   .then(function(response){
     return response.json()
   }).then(function(data){
     const weatherDescription = (data.weather[0]['description']);
-    return encodeURI(weatherDescription);
+    weatherImage(encodeURI(weatherDescription));
   })
   .catch(function(error){
     console.log('error');
@@ -25,13 +35,10 @@ function getWeather() {
 //console.log(getWeather());
 // getWeather()
 
-function weatherImage (){
-  getWeather()
-  //console.log(weatherDescription);
-  .then(function(description){
+function weatherImage (description){
     const weatherDescriptionUrl = `https://api.unsplash.com/search/photos?query=${description}&client_id=f685c677520cae68e71ed6aab8dd7505eb31b24ec90d2d97531e0f7c6507a189`;
-    return fetch(weatherDescriptionUrl);
-  })
+    return fetch(weatherDescriptionUrl)
+
   .then(function(response){
     return response.json()
   }).then (function(data){
@@ -45,4 +52,5 @@ function weatherImage (){
 
   })
 }
-weatherImage();
+//getWeather();
+//weatherImage();
